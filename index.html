@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RACI 責任矩陣儀表板</title>
+<meta name="description" content="RACI（負責、課責、諮詢、告知）責任矩陣儀表板：矩陣、角色負荷向量、規則檢查">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>RACI 責任矩陣儀表板<span class="badge-sample" id="sampleBadge">範例資料</span></h1>
+      <p class="sub">每項任務對應各角色的 R / A / C / I，並自動檢查「一項任務只有一位 A」等規則。</p>
+    </div>
+    <div class="toolbar">
+      <button id="btnImport" type="button">匯入 CSV</button>
+      <button id="btnExport" type="button">匯出 CSV</button>
+      <button id="btnReset" type="button">還原範例</button>
+      <button id="btnTheme" type="button" aria-label="切換深淺色">深／淺色</button>
+      <input id="file" type="file" accept=".csv,text/csv" hidden>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="摘要"></section>
+
+  <ul class="legend" aria-label="圖例">
+    <li><span class="chip R">R</span>Responsible 負責執行</li>
+    <li><span class="chip A">A</span>Accountable 最終課責（每項任務僅一位）</li>
+    <li><span class="chip C">C</span>Consulted 事前諮詢</li>
+    <li><span class="chip I">I</span>Informed 事後告知</li>
+  </ul>
+
+  <div class="filters">
+    <label for="q">搜尋</label>
+    <input id="q" type="search" placeholder="任務名稱">
+    <label for="cat">類別</label>
+    <select id="cat"></select>
+    <label for="role">聚焦角色</label>
+    <select id="role"></select>
+    <label for="onlyIssue"><input id="onlyIssue" type="checkbox"> 只看有問題的任務</label>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t1" aria-selected="true" aria-controls="p1">責任矩陣</button>
+    <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2">角色向量與檢查</button>
+  </div>
+
+  <section id="p1" role="tabpanel" aria-labelledby="t1">
+    <div class="card scroll"><table id="matrix"></table></div>
+    <p class="hint">點一下儲存格可切換：空白 → R → A → A+R → C → I → 空白。編輯只存在目前頁面，請用「匯出 CSV」保存；點欄位標題可聚焦該角色。</p>
+  </section>
+
+  <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+    <div class="grid2">
+      <div class="card pad">
+        <h2>各角色的 RACI 向量（任務數）</h2>
+        <div class="bars" id="bars"></div>
+        <div style="height:14px"></div>
+        <div class="scroll" style="max-height:none"><table class="vec" id="vec"></table></div>
+      </div>
+      <div class="card pad">
+        <h2>規則檢查</h2>
+        <ul class="issues" id="issues"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>純靜態網頁，資料來源為 <code>data/raci.csv</code>；更新該檔案並推送到 GitHub 後，網頁即更新。</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+<script src="app.js"></script>
+</body>
+</html>
